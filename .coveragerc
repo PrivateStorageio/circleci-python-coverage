@@ -5,3 +5,8 @@ source =
 branch = True
 parallel = False
 relative_files = true
+
+[paths]
+source =
+       src/
+       /nix/store/*-python3.9-circleci-python-coverage-2022.5.13/lib/python3.9/site-packages/
