@@ -97,7 +97,7 @@ jobs:
       - run:
           name: "Run Test Suite"
           command: |
-            nix-build --cores 5 tests.nix
+            nix-build --cores 5 tests.nix -A tests
 
       - run:
           name: "Persist Coverage to Workspace"
