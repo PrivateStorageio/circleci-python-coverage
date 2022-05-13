@@ -3,5 +3,5 @@ source =
     circleci_coverage_python
 
 branch = True
-parallel = True
+parallel = False
 relative_files = true
