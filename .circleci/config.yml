@@ -125,7 +125,8 @@ jobs:
           name: "Finish Coverage Report"
           command: |
             find .
-            .circleci/finish-coverage-report ./coverage-workspace
+            nix-shell -p 'python3.withPackages (ps: [ps.coverage])' --run 'coverage combine coverage-workspace; coverage report'
+
 
 
 workflows:
