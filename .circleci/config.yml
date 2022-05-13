@@ -32,7 +32,8 @@ jobs:
           name: "Persist Coverage to Workspace"
           command: |
             mkdir -p coverage-workspace
-            mv .coverage* slipcover.json coverage-workspace/
+            Move-Item .coverage* coverage-workspace/
+            Move-Item slipcover.json coverage-workspace/
 
       - persist_to_workspace:
           root: "coverage-workspace"
