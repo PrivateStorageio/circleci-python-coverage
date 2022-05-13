@@ -96,9 +96,7 @@ jobs:
       - run:
           name: "Run Test Suite"
           command: |
-            nix-build --cores 5 tests.nix \
-              --arg collectCoverage << parameters.coverage >> \
-              --argstr python python<< parameters.py-version >>
+            nix-build --cores 5 tests.nix
 
       - run:
           name: "Persist Coverage to Workspace"
