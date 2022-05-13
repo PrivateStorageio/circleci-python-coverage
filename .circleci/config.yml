@@ -32,8 +32,8 @@ jobs:
           name: "Persist Coverage to Workspace"
           command: |
             mkdir -p coverage-workspace
-            Move-Item .coverage* coverage-workspace/
-            Move-Item slipcover.json coverage-workspace/
+            Move-Item .coverage coverage-workspace/.coverage-windows
+            Move-Item slipcover.json coverage-workspace/slipcover-windows.json
 
       - persist_to_workspace:
           root: "coverage-workspace"
@@ -70,7 +70,8 @@ jobs:
           name: "Persist Coverage to Workspace"
           command: |
             mkdir -p coverage-workspace
-            mv .coverage* slipcover.json coverage-workspace/
+            mv .coverage coverage-workspace/.coverage-macos
+            mv slipcover.json coverage-workspace/slipcover-macos.json
 
       - persist_to_workspace:
           root: "coverage-workspace"
@@ -103,7 +104,8 @@ jobs:
           name: "Persist Coverage to Workspace"
           command: |
             mkdir -p coverage-workspace
-            cp ./result/.coverage coverage-workspace/.coverage.linux
+            cp ./result/.coverage coverage-workspace/.coverage-linux
+            cp ./result/slipcover.json coverage-workspace/slipcover-linux.json
 
       - persist_to_workspace:
           root: "coverage-workspace"
