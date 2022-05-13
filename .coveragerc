@@ -1,0 +1,7 @@
+[run]
+source =
+    circleci_coverage_python
+
+branch = True
+parallel = True
+relative_files = true

@@ -1,0 +1,141 @@
+version: "2.1"
+
+orbs:
+  # Get easier access to the Windows machine executor.
+  win: "circleci/windows@4.1.1"
+
+jobs:
+  windows-tests:
+    executor:
+      # https://circleci.com/developer/orbs/orb/circleci/windows
+      name: "win/server-2022"
+      # resource class, can be "medium", "large", "xlarge", "2xlarge"
+      size: "medium"
+
+    steps:
+      # Commands are run in a Windows virtual machine environment
+      - "checkout"
+      - run:
+          name: "Setup Environment"
+          command: |
+            python -V
+            python -m pip install -v --upgrade pip
+            python -m pip install -v .[test]
+            pip freeze
+      - run:
+          name: "Run Tests"
+          command: |
+            python -m coverage run -m unittest --verbose --start-directory tests
+            python -m slipcover --source circleci_python_coverage --json --pretty-print --out slipcover.json -m unittest --verbose --start-directory tests
+
+      - run:
+          name: "Persist Coverage to Workspace"
+          command: |
+            mkdir -p coverage-workspace
+            mv .coverage.* slipcover.json coverage-workspace/
+
+      - persist_to_workspace:
+          root: "coverage-workspace"
+          paths:
+            - "*"
+
+  macos-tests:
+    macos:
+      xcode: "12.3.0"
+
+    steps:
+      - "checkout"
+
+      - run:
+          name: "Get Pip"
+          command: |
+            curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+            python3.9 get-pip.py
+
+      - run:
+          name: "Setup Environment"
+          command: |
+            python3.9 -m venv venv
+            venv/bin/python -m pip install -v --upgrade pip
+            venv/bin/python -m pip install -v .[test]
+
+      - run:
+          name: "Run Tests"
+          command: |
+            python -m coverage run -m unittest --verbose --start-directory tests
+            python -m slipcover --source circleci_python_coverage --json --pretty-print --out slipcover.json -m unittest --verbose --start-directory tests
+
+      - run:
+          name: "Persist Coverage to Workspace"
+          command: |
+            mkdir -p coverage-workspace
+            mv .coverage.* slipcover.json coverage-workspace/
+
+      - persist_to_workspace:
+          root: "coverage-workspace"
+          paths:
+            - "*"
+
+  linux-tests:
+    docker:
+      - image: "nixos/nix:2.5.1"
+
+    environment:
+      NIX_CONFIG: "experimental-features = nix-command"
+      NIXPKGS: "https://github.com/NixOS/nixpkgs/archive/28abc4e43a24d28729509e2d83f5c4f3b3418189.tar.gz"
+
+    steps:
+      - run: &FIX_CA_CERTS
+          name: "Fix CA Certificates"
+          command: |
+            mkdir -p /etc/ssl/certs/
+            ln -s $NIX_SSL_CERT_FILE /etc/ssl/certs/
+
+      - "checkout"
+
+      - run:
+          name: "Run Test Suite"
+          command: |
+            nix-build --cores 5 tests.nix \
+              --arg collectCoverage << parameters.coverage >> \
+              --argstr python python<< parameters.py-version >>
+
+      - run:
+          name: "Persist Coverage to Workspace"
+          command: |
+            mkdir -p coverage-workspace
+            cp ./result/.coverage coverage-workspace/.coverage.linux
+
+      - persist_to_workspace:
+          root: "coverage-workspace"
+          paths:
+            - "*"
+
+  finish-coverage:
+    docker:
+      - image: "nixos/nix:2.5.1"
+
+    steps:
+      - "checkout"
+      - attach_workspace:
+          at: "coverage-workspace"
+
+      - run:
+          name: "Finish Coverage Report"
+          command: |
+            .circleci/finish-coverage-report ./coverage-workspace
+
+
+workflows:
+  version: 2
+  everything:
+    jobs:
+    - "linux-tests"
+    - "macos-tests"
+    - "windows-tests"
+    - "finish-coverage":
+        # Make sure it depends on all coverage-collecting jobs!
+        requires:
+          - "linux-tests"
+          - "macos-tests"
+          - "windows-tests"
