@@ -27,6 +27,7 @@ jobs:
           command: |
             python -m coverage run --debug=config -m unittest discover --verbose circleci_python_coverage.tests
             python -m slipcover --source src/circleci_python_coverage --json --pretty-print --out slipcover.json -m unittest discover --verbose circleci_python_coverage.tests
+            python -m coverage report
 
       - run:
           name: "Persist Coverage to Workspace"
@@ -65,6 +66,7 @@ jobs:
           command: |
             venv/bin/python -m coverage run --debug=config -m unittest discover --verbose circleci_python_coverage.tests
             venv/bin/python -m slipcover --source src/circleci_python_coverage --json --pretty-print --out slipcover.json -m unittest discover --verbose circleci_python_coverage.tests
+            python -m coverage report
 
       - run:
           name: "Persist Coverage to Workspace"
