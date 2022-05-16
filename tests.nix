@@ -30,10 +30,14 @@ let
   tests = pkgs.runCommand "circleci-python-coverage" {
   } ''
     set -x
+
     ${python}/bin/python -m coverage run --rcfile=${pkg.src}/.coveragerc --debug=config -m circleci_python_coverage.tests.test_it --verbose
+
     SOURCE=$(${python}/bin/python -c 'import circleci_python_coverage; print(circleci_python_coverage.__file__.rsplit("/", 1)[0])')
     ${python}/bin/python -m slipcover --source $SOURCE --json --pretty-print --out slipcover.json -m circleci_python_coverage.tests.test_it --verbose
+
     ${python}/bin/python -m coverage report
+    ${python}/bin/python -m coverage html
 
     mkdir $out
     mv .coverage* slipcover.json $out/

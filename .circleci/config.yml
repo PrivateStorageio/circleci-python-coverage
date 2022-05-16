@@ -126,12 +126,7 @@ jobs:
       - run:
           name: "Finish Coverage Report"
           command: |
-            find .
-            set -x
-            nix-shell -p 'python3.withPackages (ps: [ps.coverage])' --run '
-              python -m coverage combine --debug=config coverage-workspace/.coverage*
-              python -m coverage report --debug=config
-            '
+            .circleci/finish-coverage-report
 
 
 
