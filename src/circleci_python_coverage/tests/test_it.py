@@ -1,4 +1,4 @@
-from unittest import TestCase, skipUnless
+from unittest import TestCase, skipUnless, main
 from sys import platform
 
 from circleci_python_coverage import linux, windows, macos
@@ -16,3 +16,6 @@ class Tests(TestCase):
     @skipUnless("darwin" in platform, "")
     def test_macos(self):
         macos.foo()
+
+if __name__ == '__main__':
+    main()
