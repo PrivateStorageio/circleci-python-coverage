@@ -9,4 +9,5 @@ for p in d.iterdir():
     cmd.extend(["--add-tracefile", str(p)])
 cmd.extend(["--output", argv[2]])
 
+print(cmd)
 print(check_output(cmd))
