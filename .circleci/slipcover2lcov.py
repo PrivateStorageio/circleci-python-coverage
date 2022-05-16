@@ -12,6 +12,7 @@ def main(workspace: str, output: str) -> None:
         with child.open() as infile:
             output_path = output_dir / (child.stem + ".lcov")
             with output_path.open("w") as outfile:
+                print(f"writing converted {child} to {output_path}")
                 slipcover2lcov(infile, outfile, make_relative_name)
 
 
