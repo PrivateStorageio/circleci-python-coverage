@@ -131,8 +131,6 @@ jobs:
                 cp $f ./.coverage
                 coverage report
               done
-              coverage combine coverage-workspace/.coverage*
-              coverage report
             '
 
 
