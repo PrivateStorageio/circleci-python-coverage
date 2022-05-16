@@ -128,7 +128,8 @@ jobs:
             set -x
             nix-shell -p 'python3.withPackages (ps: [ps.coverage])' --run '
               for f in coverage-workspace/.coverage*; do
-                coverage report --data-file=$f
+                cp $f ./.coverage
+                coverage report
               done
               coverage combine coverage-workspace/.coverage*
               coverage report
