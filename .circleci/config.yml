@@ -66,7 +66,7 @@ jobs:
           command: |
             venv/bin/python -m coverage run --debug=config -m circleci_python_coverage.tests.test_it --verbose
             venv/bin/python -m slipcover --source src/circleci_python_coverage --json --pretty-print --out slipcover.json -m circleci_python_coverage.tests.test_it --verbose
-            python -m coverage report
+            venv/bin/python -m coverage report
 
       - run:
           name: "Persist Coverage to Workspace"
