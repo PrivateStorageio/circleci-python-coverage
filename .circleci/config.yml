@@ -126,6 +126,7 @@ jobs:
       - run:
           name: "Finish Coverage Report"
           command: |
+            find .
             .circleci/finish-coverage-report coverage-workspace
 
 
