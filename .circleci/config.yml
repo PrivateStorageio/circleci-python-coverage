@@ -125,7 +125,14 @@ jobs:
           name: "Finish Coverage Report"
           command: |
             find .
-            nix-shell -p 'python3.withPackages (ps: [ps.coverage])' --run 'coverage combine coverage-workspace/.coverage*; coverage report'
+            set -x
+            nix-shell -p 'python3.withPackages (ps: [ps.coverage])' --run '
+              for f in coverage-workspace/.coverage*; do
+                coverage report --data-file=$f
+              done
+              coverage combine coverage-workspace/.coverage*
+              coverage report
+            '
 
 
 
