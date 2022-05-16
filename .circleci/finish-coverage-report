@@ -12,7 +12,7 @@ shift
 # We can very easily merge all of the coverage.py data using the coverage.py
 # tool.
 python -m coverage --version
-python -m coverage combine --debug=config "$workspace_path"
+python -m coverage combine --debug=config "$workspace_path/.coverage*"
 python -m coverage report --debug=config
 
 # This leaves just the slipcover json data.  We could convert it to
