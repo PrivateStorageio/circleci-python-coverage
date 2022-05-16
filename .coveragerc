@@ -4,7 +4,7 @@ source =
 
 branch = True
 parallel = False
-relative_files = true
+relative_files = False
 
 [paths]
 source =
