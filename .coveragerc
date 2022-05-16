@@ -1,6 +1,6 @@
 [run]
 source =
-    circleci_coverage_python
+    circleci_python_coverage
 
 branch = True
 parallel = False
