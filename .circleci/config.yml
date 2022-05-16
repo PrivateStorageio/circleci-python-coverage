@@ -130,7 +130,7 @@ jobs:
             set -x
             nix-shell -p 'python3.withPackages (ps: [ps.coverage])' --run '
               python -m coverage combine --debug=config coverage-workspace/.coverage*
-              python -m coverage --debug=config report
+              python -m coverage report --debug=config
             '
 
 
