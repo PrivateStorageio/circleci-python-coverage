@@ -129,10 +129,8 @@ jobs:
             find .
             set -x
             nix-shell -p 'python3.withPackages (ps: [ps.coverage])' --run '
-              for f in coverage-workspace/.coverage*; do
-                cp $f ./.coverage
-                coverage report
-              done
+              python -m coverage combine --debug=config coverage-workspace/.coverage*
+              python -m coverage --debug=config report
             '
 
 
