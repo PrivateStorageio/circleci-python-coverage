@@ -46,7 +46,8 @@ def make_relative_name(prefix_patterns: list[Pattern], make_relative_to: str, fi
     for prefix_pattern in prefix_patterns:
         match = prefix_pattern.match(filename)
         if match is not None:
-            return make_relative_to + match.group("relative")
+            # XXX Windows dirsep sometimes
+            return make_relative_to + match.group("relative").replace("\\", "/")
     return filename
 
 
