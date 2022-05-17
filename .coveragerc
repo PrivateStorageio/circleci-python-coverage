@@ -13,8 +13,10 @@ source =
         # run.
        src/
 
-       # A Nix build embeds source paths like this one.
-       /nix/store/*-python3.9-circleci-python-coverage-*/lib/python3.9/site-packages/
+       # A Nix build embeds source paths like this one.  The 3rd segment in
+       # particular varies quite a bit depending on exactly what choices are
+       # made for the Nix expression defining the object.
+       /nix/store/*-python*/lib/python*/site-packages/
 
        # A Windows build embeds source paths like this one.
        C:\tools\miniconda3\Lib\site-packages\
