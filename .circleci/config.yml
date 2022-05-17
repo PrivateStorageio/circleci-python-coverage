@@ -31,7 +31,7 @@ jobs:
       - run:
           name: "Run slipcover"
           command: |
-            python .circleci/slipcover circleci_python_coverage -- circleci_python_coverage.tests.test_slipcover --verbose
+            python .circleci/slipcover circleci_python_coverage -- -m circleci_python_coverage.tests.test_slipcover --verbose
 
       - run:
           name: "Persist Coverage to Workspace"
