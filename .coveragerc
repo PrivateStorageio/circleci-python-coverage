@@ -18,8 +18,11 @@ source =
        # made for the Nix expression defining the object.
        /nix/store/*-python*/lib/python*/site-packages/
 
-       # A Windows build embeds source paths like this one.
-       C:\tools\miniconda3\Lib\site-packages\
+       # A Windows build embeds source paths like this one.  Note that though
+       # Windows paths are not case sensitive our matching against this path
+       # *will* be and we will match against a lower-cased version of it.  So
+       # we make sure it is lowercase here.
+       C:\tools\miniconda3\lib\site-packages\
 
        # A macOS build embeds source paths like this one.
        /Users/distiller/project/venv/lib/python*/site-packages/
