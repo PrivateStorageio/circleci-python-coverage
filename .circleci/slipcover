@@ -1,0 +1,22 @@
+import pathlib
+import runpy
+import sys
+
+# We have to tell slipcover where to find the source we want it to instrument.
+# Find where our package was installed.  This should be a path like
+# `/foo/bar/baseofthepackage`
+sources = []
+while sys.argv[1:] and sys.argv[1] != '--':
+    sources.extend(["--source", str(pathlib.Path(__import__(sys.argv.pop(1)).__file__).parent)])
+
+if sys.argv[1:] and sys.argv[1] == '--':
+    sys.argv.pop(1)
+
+sys.argv[1:] = sources + [
+    "--json",
+    "--pretty-print",
+    "--out",
+    "slipcover.json",
+] + sys.argv[1:]
+
+runpy.run_module("slipcover", alter_sys=True)

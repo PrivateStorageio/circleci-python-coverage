@@ -23,11 +23,15 @@ jobs:
             python -m pip install -v .[test]
             pip freeze
       - run:
-          name: "Run Tests"
+          name: "Run coverage.py"
           command: |
             python -m coverage run --debug=config -m circleci_python_coverage.tests.test_coveragepy --verbose
-            python -m slipcover --source src/circleci_python_coverage --json --pretty-print --out slipcover.json -m circleci_python_coverage.tests.test_slipcover --verbose
             python -m coverage report
+
+      - run:
+          name: "Run slipcover"
+          command: |
+            python .circleci/slipcover _zkapauthorizer -- circleci_python_coverage.tests.test_slipcover --verbose
 
       - run:
           name: "Persist Coverage to Workspace"
